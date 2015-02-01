@@ -3,4 +3,4 @@
     - user: root
     - group: root
     - mode: 644
-    - source: salt://tests/tconfig/hello.txt
+    - source: salt://test_copy/tconfig/hello.txt
