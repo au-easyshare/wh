@@ -4,16 +4,18 @@ import salt
 
 app = Flask(__name__)
 
-hooks = {'pmm': {'refs/heads/beta': ['*', 'state.sls', ['beta_app']]}}
+hooks = {'app':
+            {'refs/heads/beta':
+                ['*', 'state.sls', ['beta_tag']],
+            'refs/heads/prod':
+                ['*', 'state.sls', ['prod_tag']]}
+        }
 
 
 @app.route('/', methods=['POST'])
 def foo():
     data = json.loads(request.data)
-    print request.data
-    print data
     if 'commits' in data:
-        # print "New commit by: {}".format(data['commits'][0]['author']['name'])
         repo = data['repository']['name']
         if repo in hooks:
             hook = hooks[repo]
@@ -21,12 +23,9 @@ def foo():
             if ref in hook:
                 ss = hook[ref]
                 client = salt.client.LocalClient()
-                rval = client.cmd(*ss)
-                print "OK"
-                return jsonify(rval)
-        else:
-            print "not commit"
-    return "OK"
+                rval = client.cmd_async(*ss, queue=True)
+                return jsonify(job_id=rval)
+    return jsonify(job_id=None, status='unknown app or ref')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
