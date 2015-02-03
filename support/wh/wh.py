@@ -6,9 +6,9 @@ app = Flask(__name__)
 
 hooks = {'app':
             {'refs/heads/beta':
-                ['*', 'state.sls', ['beta_tag']],
+                ['*', 'state.sls', ['beta_app']],
             'refs/heads/prod':
-                ['*', 'state.sls', ['prod_tag']]}
+                ['*', 'state.sls', ['prod_app']]}
         }
 
 
@@ -23,6 +23,7 @@ def foo():
             if ref in hook:
                 ss = hook[ref]
                 client = salt.client.LocalClient()
+                print ss
                 rval = client.cmd_async(*ss, queue=True)
                 return jsonify(job_id=rval)
     return jsonify(job_id=None, status='unknown app or ref')

@@ -4,7 +4,7 @@ beta-app:
         - rev: beta
         - user: www-data
         - force: True
-        - target: /data/var/www/beta
+        - target: /data/var/www/beta.easy-share.com.au
         - identity: /data/var/www/.ssh/id_rsa
 
 pre-prod-app:
