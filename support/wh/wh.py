@@ -8,7 +8,13 @@ hooks = {'app':
             {'refs/heads/beta':
                 ['*', 'state.sls', ['beta_app']],
             'refs/heads/prod':
-                ['*', 'state.sls', ['prod_app']]}
+                ['*', 'state.sls', ['prod_app']]},
+          'es_sa':
+            {'refs/heads/master':
+                ['*', 'state.sls', ['es_sa_app']]},
+          'eservices':
+            {'refs/heads/beta':
+                ['*', 'state.sls', ['eservices_beta']]}
         }
 
 
