@@ -3,7 +3,7 @@ beta-app:
         - name: git@github.com:au-easyshare/app.git
         - rev: beta
         - user: www-data
-        - force: True
+        - force_checkout: True
         - target: /data/var/www/beta.easy-share.com.au
         - identity: /data/var/www/.ssh/id_rsa
 

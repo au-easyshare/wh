@@ -7,16 +7,19 @@ app = Flask(__name__)
 hooks = {'app':
             {'refs/heads/beta':
                 ['*', 'state.sls', ['beta_app']],
-            'refs/heads/prod':
+             'refs/heads/prod':
                 ['*', 'state.sls', ['prod_app']]},
-          'es_sa':
+         'es_sa':
             {'refs/heads/master':
                 ['*', 'state.sls', ['es_sa_app']]},
-          'eservices':
+         'sap':
+            {'refs/heads/master':
+                ['*', 'state.sls', ['sap']]},
+         'eservices':
             {'refs/heads/beta':
                 ['*', 'state.sls', ['eservices_beta']],
-                ['*', 'state.sls', ['eservices_prod']]}
-        }
+             'refs/heads/prod':
+                ['*', 'state.sls', ['eservices_prod']]}}
 
 
 @app.route('/', methods=['POST'])

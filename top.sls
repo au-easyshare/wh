@@ -6,3 +6,5 @@ base:
         - es_sa_app
         - eservices_beta
         - eservices_prod
+    'gw1':
+        - sap
