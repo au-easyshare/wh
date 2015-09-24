@@ -1,8 +1,13 @@
-from flask import Flask, request, jsonify
 import json
+import hmac
+import hashlib
+
+from flask import Flask, request, jsonify, abort
 import salt
 
 app = Flask(__name__)
+app.debug = True
+app.config.from_object('config')
 
 hooks = {'app':
             {'refs/heads/beta':
@@ -22,8 +27,14 @@ hooks = {'app':
                 ['*', 'state.sls', ['eservices_prod']]}}
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST', 'GET'])
 def foo():
+    if request.method == 'GET':
+        return jsonify(job_id=None, status='OK')
+    incoming = request.headers['X-Hub-Signature']
+    calculated = hmac.new(app.config['SECRET'], request.data, hashlib.sha1).hexdigest()
+    if calculated != incoming.split('=')[-1]:
+        abort(401, "Invalid hash")
     data = json.loads(request.data)
     if 'commits' in data:
         repo = data['repository']['name']
