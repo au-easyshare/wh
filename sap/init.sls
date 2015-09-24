@@ -4,7 +4,7 @@ sap-app:
         - user: sadmin
         - force: True
         - target: /home/sadmin/sap
-        - identity: /home/sadmin/.ssh/id_rsa
+        - identity: /home/sadmin/.ssh/esdeploy.priv
 
 
 /home/sadmin/sap/ve:
@@ -13,7 +13,13 @@ sap-app:
     - user: sadmin
 
 
-sap:
+sap-beta:
+    service.running:
+      - enable: True
+      - watch: 
+        - git: sap-app
+
+sap-prod:
     service.running:
       - enable: True
       - watch: 
