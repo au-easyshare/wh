@@ -11,7 +11,8 @@ sap-app:
   virtualenv.managed:
     - requirements: /home/sadmin/sap/requirements.txt
     - user: sadmin
-
+    - require: 
+        - git: sap-app
 
 sap-beta:
     service.running:

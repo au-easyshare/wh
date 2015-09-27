@@ -9,23 +9,6 @@ app = Flask(__name__)
 app.debug = True
 app.config.from_object('config')
 
-hooks = {'app':
-            {'refs/heads/beta':
-                ['*', 'state.sls', ['beta_app']],
-             'refs/heads/prod':
-                ['*', 'state.sls', ['prod_app']]},
-         'es_sa':
-            {'refs/heads/master':
-                ['*', 'state.sls', ['es_sa_app']]},
-         'sap':
-            {'refs/heads/master':
-                ['*', 'state.sls', ['sap']]},
-         'eservices':
-            {'refs/heads/beta':
-                ['*', 'state.sls', ['eservices_beta']],
-             'refs/heads/prod':
-                ['*', 'state.sls', ['eservices_prod']]}}
-
 
 @app.route('/', methods=['POST', 'GET'])
 def foo():
@@ -38,8 +21,8 @@ def foo():
     data = json.loads(request.data)
     if 'commits' in data:
         repo = data['repository']['name']
-        if repo in hooks:
-            hook = hooks[repo]
+        if repo in app.config['HOOKS']:
+            hook = app.config['HOOKS'][repo]
             ref = data['ref']
             if ref in hook:
                 ss = hook[ref]
